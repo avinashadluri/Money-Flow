@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="format-detection" content="telephone=no" />
+        <meta name="msapplication-tap-highlight" content="no" />
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height" />
+        <link type="text/css" rel="stylesheet" href="css/bootstrap.css"  media="screen,projection"/>
+        <title>Payments</title>
+        <style type="text/css">
+            @font-face {
+              font-family: 'Material Icons';
+              font-style: normal;
+              font-weight: 400;
+              src: local('Material Icons'), local('MaterialIcons-Regular'), url(fonts/2fcrYFNaTjcS6g4U3t-Y5ZjZjT5FdEJ140U2DJYC3mY.woff2) format('woff2');
+            }
+            .material-icons {
+              font-family: 'Material Icons';
+              font-weight: normal;
+              font-style: normal;
+              font-size: 24px;
+              line-height: 1;
+              letter-spacing: normal;
+              text-transform: none;
+              display: inline-block;
+              white-space: nowrap;
+              word-wrap: normal;
+              direction: ltr;
+              -webkit-font-feature-settings: 'liga';
+              -webkit-font-smoothing: antialiased;
+            }
+            @font-face {
+              font-family: 'Ubuntu';
+              font-style: normal;
+              font-weight: 400;
+              src: local('Ubuntu'), url(fonts/ODszJI8YqNw8V2xPulzjO_esZW2xOQ-xsNqO47m55DA.woff2) format('woff2');
+              unicode-range: U+0460-052F, U+20B4, U+2DE0-2DFF, U+A640-A69F;
+            }
+            /* cyrillic */
+            @font-face {
+              font-family: 'Ubuntu';
+              font-style: normal;
+              font-weight: 400;
+              src: local('Ubuntu'), url(fonts/iQ9VJx1UMASKNiGywyyCXvesZW2xOQ-xsNqO47m55DA.woff2) format('woff2');
+              unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+            }
+            /* greek-ext */
+            @font-face {
+              font-family: 'Ubuntu';
+              font-style: normal;
+              font-weight: 400;
+              src: local('Ubuntu'), url(fonts/WkvQmvwsfw_KKeau9SlQ2_esZW2xOQ-xsNqO47m55DA.woff2) format('woff2');
+              unicode-range: U+1F00-1FFF;
+            }
+            /* greek */
+            @font-face {
+              font-family: 'Ubuntu';
+              font-style: normal;
+              font-weight: 400;
+              src: local('Ubuntu'), url(fonts/gYAtqXUikkQjyJA1SnpDLvesZW2xOQ-xsNqO47m55DA.woff2) format('woff2');
+              unicode-range: U+0370-03FF;
+            }
+            /* latin-ext */
+            @font-face {
+              font-family: 'Ubuntu';
+              font-style: normal;
+              font-weight: 400;
+              src: local('Ubuntu'), url(fonts/Wu5Iuha-XnKDBvqRwQzAG_esZW2xOQ-xsNqO47m55DA.woff2) format('woff2');
+              unicode-range: U+0100-024F, U+1E00-1EFF, U+20A0-20AB, U+20AD-20CF, U+2C60-2C7F, U+A720-A7FF;
+            }
+            /* latin */
+            @font-face {
+              font-family: 'Ubuntu';
+              font-style: normal;
+              font-weight: 400;
+              src: local('Ubuntu'), url(fonts/sDGTilo5QRsfWu6Yc11AXg.woff2) format('woff2');
+              unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+            }
+            /*header starts*/
+            body {
+              /*background-color: #E3E3E3;*/
+            }
+            h1,h2,h3,h4,h5,h6,b,p,textarea,input,small,li,button,div,a
+            {
+              font-family: 'Ubuntu' !important;
+            }
+            html,body {
+                padding:0;
+                margin: 0;
+                background-color: #ddd;
+            }
+            .content-hide {
+                display: none;
+            }
+            hr {
+              margin: 0;
+              opacity: 0.2;
+            }
+            .nameLabel {
+              padding-top: 5px;
+            }
+        </style>
+        <link rel="stylesheet" href="css/materialdesignicons.min.css">
+    </head>
+    <body>
+      <div class="navbar navbar-default navbar-fixed-top">
+        <div class="navbar-header"><a class="navbar-brand" href="">Payments</a></div>
+      </div>
+
+      <div class="container" style="margin-top: 60px;"></div>
+
+      <hr>
+
+      <div class="actions">
+        <div class="row">
+          <div class="col-xs-4 pull-right">
+            <button class="btn btn-primary btn-md addpayment ">
+              Add
+            </button>
+          </div>
+        </div>
+      </div>
+      <script type="text/javascript" src="js/jquery.min.js"></script>
+      <script type="text/javascript" src="js/bootstrap.min.js"></script>
+      <script type="text/javascript">
+        $(document).ready(function($) {
+          init();
+          $(document).on('click', '.payamount', function(event) {
+            if(localStorage.summarydata) {
+              var summarydata2 = JSON.parse(localStorage.summarydata);
+              var thisName = $(this).closest('.row').find("p").html();
+              var thisAmount = $(this).closest('.row').find("input").val();
+              $(summarydata2).each(function(index, val) {
+                if(val.name == thisName) {
+                  summarydata2[index].amount = (thisAmount)?thisAmount:0;
+                  summarydata2[index].status = 'paid';
+                }
+              });
+              localStorage.summarydata = JSON.stringify(summarydata2);
+              $(this).hide();
+              $(this).siblings('.paymentaction').show();
+            }
+          });
+          $(document).on('click', '.paidamount', function(event) {
+            if(localStorage.summarydata) {
+              var summarydata2 = JSON.parse(localStorage.summarydata);
+              var thisName = $(this).closest('.row').find("p").html();
+              var thisAmount = $(this).closest('.row').find("input").val();
+              $(summarydata2).each(function(index, val) {
+                if(val.name == thisName) {
+                  summarydata2[index].amount = (thisAmount)?thisAmount:0;
+                  summarydata2[index].status = 'pay';
+                }
+              });
+              localStorage.summarydata = JSON.stringify(summarydata2);
+              $(this).hide();
+              $(this).siblings('.paymentaction').show();
+            }
+          });
+          $(document).on('keypress', '.paymentInput', function(e) {
+            if (e.which === 13 && $(this).val()) {
+              if(localStorage.summarydata) {
+                var summarydata4 = JSON.parse(localStorage.summarydata);
+                var thisName = $(this).closest('.row').find("p").html();
+                var thisAmount = $(this).closest('.row').find("input").val();
+                $(summarydata4).each(function(index, val) {
+                  if(val.name == thisName) {
+                    summarydata4[index].amount = (thisAmount)?thisAmount:0;
+                    summarydata4[index].status = 'pay';
+                  }
+                });
+                localStorage.summarydata = JSON.stringify(summarydata4);
+              }
+            }
+          });
+          $(document).on('click', '.addpayment', function(event) {
+            var item = prompt("Please enter category", "");
+            if (item != null) {
+              if(localStorage.summarydata) {
+                var summarydata3 = JSON.parse(localStorage.summarydata);
+                summarydata3.push({name:item,amount:'0',status:'pay'});
+                localStorage.summarydata = JSON.stringify(summarydata3);
+                var appendData = '<div class="row"><div class="col-xs-4 nameLabel"><p class="text-right">'+item+'</p></div><div class="col-xs-4"><input type="text" class="form-control input-sm paymentInput" value="0"></div><div class="col-xs-4"><button class="btn btn-danger btn-sm paymentaction payamount">Pay</button><button class="btn btn-success btn-sm paymentaction paidamount content-hide">Paid</button></div></div>';
+                $(".container").append(appendData);
+              }
+            }
+          });
+          function init() {
+            if(localStorage.summarydata) {
+              var summarydata = JSON.parse(localStorage.summarydata);
+            }else {
+              var summarydata = [
+                {name:'Rent',amount:'7500',status:'pay'},
+                {name:'Power',amount:'380',status:'pay'},
+                {name:'Dust',amount:'50',status:'pay'},
+                {name:'Milk',amount:'1100',status:'pay'},
+                {name:'Internet',amount:'1138',status:'pay'},
+                {name:'TV',amount:'480',status:'pay'},
+                {name:'Worker',amount:'800',status:'pay'},
+                {name:'Kitchen',amount:'3500',status:'pay'},
+                {name:'Mobile',amount:'1100',status:'pay'},
+                {name:'Loan',amount:'6903',status:'pay'},
+                {name:'Chits',amount:'41250',status:'pay'},
+                {name:'Creditcard',amount:'9000',status:'pay'},
+                {name:'MutualFunds',amount:'7000',status:'pay'},
+                {name:'PPF',amount:'2000',status:'pay'},
+                {name:'Bike',amount:'1000',status:'pay'},
+                {name:'Goutham',amount:'1000',status:'pay'},
+                {name:'Health',amount:'2000',status:'pay'},
+                {name:'EF',amount:'5000',status:'pay'},
+                {name:'Food',amount:'500',status:'pay'},
+                {name:'Petty',amount:'1000',status:'pay'}
+              ];
+              localStorage.summarydata = JSON.stringify(summarydata);
+            }
+            loadData(summarydata);
+          }
+          function loadData(summarydata) {
+            $(summarydata).each(function(index, val) {
+              var status = (val.status == 'pay')?'<button class="btn btn-danger btn-sm paymentaction payamount">Pay</button><button class="btn btn-success btn-sm paymentaction paidamount content-hide">Paid</button>':'<button class="btn btn-danger btn-sm paymentaction payamount content-hide">Pay</button><button class="btn btn-success btn-sm paymentaction paidamount">Paid</button>';
+
+              var appendData = '<div class="row"><div class="col-xs-4 nameLabel"><p class="text-right">'+val.name+'</p></div><div class="col-xs-4"><input type="text" class="form-control input-sm paymentInput" value="'+val.amount+'"></div><div class="col-xs-4">'+status+'</div></div><hr>';
+              $(".container").append(appendData);
+            });
+          }
+        });
+      </script>
+    </body>
+</html>
